@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.5.17/dist/vue.js"></script>
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css"
+        integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+</head>
+<body>
+<div id="app" class="container">
+  <h1>vue-resource插件</h1>
+  <a href="javascript:;" class="btn btn-primary" v-on:click="get">Get请求</a>
+  <a href="javascript:;" class="btn btn-primary" v-on:click="post">Post请求</a>
+  <a href="javascript:;" class="btn btn-primary" v-on:click="http">http请求</a>
+  <hr/>
+  <p>{{msg}}</p>
+
+</div>
+
+
+<script>
+  new Vue({
+    el: '#app',
+    data: {
+      msg: ''
+    },
+    mounted: function () {
+
+    },
+    methods: {
+      get: function () {
+        axios.get('../package.json', {
+          params: {
+            userId: '123'
+          },
+          headers: {
+            token: 'abc'
+          }
+        }).then(res => {
+          this.msg = res.data
+        }).catch(function (error) {
+          console.log('errer msg  ' + error)
+          this.msg = error  //输出失败？
+        })
+      },
+      post: function () {
+        axios.post('../package.json', {
+          userId: '567'
+        }, {
+          headers: {
+            token: 'bdc'
+          }
+        }).then(res => {
+          this.msg = res.data
+        }).catch(error => {
+          console.log(error)
+        })
+      },
+      http: function () {
+        axios({
+          url: '../package.json',
+          method: 'get',
+          //post使用data传参
+          data: {
+            userId: '202'
+          },
+          //get请求使用params传参
+          params: {
+            userId: '张三'
+          },
+          headers: {
+            token: 'http-abc'
+          }
+        }).then(res => {
+          this.msg = res.data
+        })
+      }
+    }
+  })
+
+</script>
+</body>
+</html>
