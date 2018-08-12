@@ -7,3 +7,4 @@
 - `npm install vue-resource --save`
 
 
+[测试代码](../test/04vue-resource.html)
