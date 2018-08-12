@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<input type="text" id="userName"/>
+<hr/>
+<p id="userNameCopy"></p>
+<script>
+    var person = {
+        age: 16
+    }
+    Object.defineProperty(person, 'userName', {
+        //value: '张三',
+        get: function () {
+            console.log('获取属性值时自动触发')
+        },
+        set: function (value) {
+            console.log('为属性赋值时自动触发:'+value)
+            document.getElementById('userName').value = value
+            document.getElementById('userNameCopy').innerText = value
+        }
+    })
+    document.getElementById('userName').addEventListener("keyup",function(event){
+        person.userName = event.target.value
+        person.age = 23
+
+        // document.getElementById('userNameCopy').innerText = event.target.value
+    })
+
+</script>
+</body>
+</html>
