@@ -1,66 +1,101 @@
-# MongoDb的使用
+# Node
 
-## 安装MongoDb服务
-
-在主目录下添加
-data/db
-data/log/mongodb.log
-mongodb.config
-
-配置内容如下
-```
-#数据库路径
-dbpath=c:\mongodb\data\db
-#日志输出路径
-logpath=c:\mongodb\data\log\mongodb.log
-#错误日志采用追加模式，不会从新创建新文件
-logappend=true
-#启用日志文件，默认启用
-journal=true
-#这个选项可以过滤掉一些无用的日志信息，若需要调试请设置为false
-quiet=true
-#端口号，默认为27017
-port=27017
-#指定存储引擎；默认不添加，如报错再测试
-#storageEngine=mmapvl
-#http配置,可以通过28017端口用浏览器访问
-#httpinterface=true
-```
-
-## 安装mongoVue客户端
-
-## 安全性，创建用户命令参考
-
-1. 在admin下创建账号密码和角色：
-`db.createUser({user:"admin",pwd:"admin",roles:["root"]})`
-Successfully added user: { "user" : "admin", "roles" : [ "root" ] }
-2. 认证：
-`db.auth("admin","admin")`
-1
-3. 切换数据库：
-`use test`
-4. 创建用户，只能操作test数据库
-`db.createUser({user:'root',pwd:'123456',roles:[{role:'dbOwner',db:'test'}]})`
+## 创建服务端
 
 ```
-Successfully added user: {
-        "user" : "root",
-        "roles" : [
-                {
-                        "role" : "dbOwner",
-                        "db" : "test"
-                }
-        ]
-}
+let http = require('http')
+let url = require('url')
+let util = require('util')
+let server = http.createServer(function (req,res) {
+  res.statusCode = 200;
+  res.setHeader("Content-Type","text/plain;charset=utf-8")
+  res.end(util.inspect(url.parse(req.url)))
+})
+server.listen(3000,'127.0.0.1',()=>{
+  console.log("服务器已经运行；")
+})
 ```
 
-## 插入程序需要的数据
+### 访问Html页面
 
-1. 创建数据库
-`user db_demo`
-2. 插入数据
-`db.goods.insert({'producetId:'100001',productName:'aaa',salePrice:234,productImage:'1.jpg'})`
-3. 客户端导入数据
-在 MongoDb文件夹中提供 `dumall-goods` 和`dumall-users`
-使用客户端导入前先创建 goods 和 users 两个集合
-4. 通过命令导入：mongoimport -d db_demo -c users --file /文件路径
+使用`fs`文件模块
+
+```
+let fs = require('fs')
+
+let server = http.createServer(function (req,res) {
+  var pathname = url.parse(req.url).pathname
+  fs.readFile(pathname.substring(1),function (err,data) {
+    if(err){
+      res.writeHead(404,{
+        'Content-Type':'text/html;charset=utf-8'
+      })
+      res.write('访问的页面不存在！！')
+    }else{
+      res.writeHead(200,{
+        'Content-Type':'text/html'
+      })
+      console.log(data.toString())
+      res.write(data.toString())
+    }
+    res.end()
+  })
+})
+```
+
+
+## 创建客户端
+
+调用第三方服务
+
+```
+var http = require('http')
+http.get('http://www.qq.com/?pgv_ref=sogoubrowser', function (res) {
+  let data = ''
+  res.on('data', function (chunk) {
+    data += chunk
+  })
+  res.on('end', function () {
+    //let result = JSON.parse(data);
+    console.log('result' + data)
+  })
+})
+```
+
+## 基于Express框架运行环境
+
+- 安装express generator 生成器
+
+`cnpm i -g express-generator`
+
+- 通过生成器自动创建项目
+
+`express server-express`
+
+- 配置分析
+
+前后端分离：
+进入 server-express目录运行`cnpm i`根据package.json 安装相关依赖
+然后运行 node bin/www 服务，访问127.0.0.1:3000 即可
+
+前后端合并：
+可以将package.json中dependencies下的内容copy到主项目的package中
+同样安装依赖后运行服务
+
+- 使用HTML不使用jade
+
+安装`cnpm i ejs --save`
+
+进入app.js
+```
+// view engine setup
+app.set('views', path.join(__dirname, 'views'));
+//app.set('view engine', 'jade');
+var ejs = require('ejs')
+app.engine('.html', ejs.__express)
+app.set('view engine', 'html')
+```
+
+
+---
+>实例文件夹 server
