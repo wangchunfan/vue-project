@@ -12,15 +12,15 @@ const portfinder = require('portfinder')
 
 //=======================mock数据第一步  start============================
 //导入express
-const express = require('express')
-//请求server
-const app = express()
-//加载本地数据文件
-var goodsData = require('./../mock/goods.json')
-//获取路由
-var router = express.Router()
-//通过路由请求数据
-app.use(router)
+// const express = require('express')
+// //请求server
+// const app = express()
+// //加载本地数据文件
+// var goodsData = require('./../mock/goods.json')
+// //获取路由
+// var router = express.Router()
+// //通过路由请求数据
+// app.use(router)
 //============================mock数据第一步 end==========================
 
 const HOST = process.env.HOST
@@ -57,11 +57,11 @@ const devWebpackConfig = merge(baseWebpackConfig, {
       poll: config.dev.poll,
     },
     //=============mock数据第二步，添加before star================
-    before(app) {
-      app.get('/goods', (req, res) => {
-        res.json(goodsData)
-      })
-    }
+    // before(app) {
+    //   app.get('/goods', (req, res) => {
+    //     res.json(goodsData)
+    //   })
+    // }
     //==============mock数据第二步，添加before end===============
   },
   plugins: [

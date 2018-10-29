@@ -40,11 +40,11 @@
                 <li v-for="(item,index) in goodsList">
                   <div class="pic">
                     <!--图片需要动态绑定，不能直接写src=""，这样会因页面渲染太快而导致图片未加载-->
-                    <a href="#"><img v-lazy="'/static/'+item.productImg" alt=""></a>
+                    <a href="#"><img v-lazy="'/static/'+item.productImage" alt=""></a>
                   </div>
                   <div class="main">
                     <div class="name">{{item.productName}}</div>
-                    <div class="price">{{item.productPrice}}</div>
+                    <div class="price">{{item.salePrice}}</div>
                     <div class="btn-area">
                       <a href="javascript:;" class="btn btn--m">加入购物车</a>
                     </div>
@@ -119,7 +119,7 @@
         axios.get("/goods").then((res) => {
           console.log(res)
           var data = res.data
-          this.goodsList = data.result
+          this.goodsList = data.result.list
         })
       },
       //响应式布局：点击显示价格
