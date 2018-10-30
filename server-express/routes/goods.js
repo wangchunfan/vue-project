@@ -19,7 +19,20 @@ mongoose.connection.on('duscibbected', function () {
 })
 
 router.get('/', function (req, res, next) {
-  Goods.find({}, function (err, doc) {
+  //获取前端参数
+  let page = parseInt(req.param("page"))
+  let pageSize = parseInt(req.param("pageSize"))
+  let skip = (page - 1) * pageSize  //跳过数量
+  let sort = req.param("sort")
+  //条件查找
+  let params = {}
+  //分页
+  let goodsModel = Goods.find(params).skip(skip).limit(pageSize);
+  //排序
+  goodsModel.sort({ 'salePrice': sort })
+  goodsModel.exec({}, function (err, doc) {
+    //直接查询所有
+    //Goods.find({}, function (err, doc) {
     if (err) {
       res.json({
         status: '1',
