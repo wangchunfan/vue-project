@@ -21,6 +21,7 @@ router目录中的文件在app.js中引用
 数据库也在启动服务时连接成功
 
 ## supervisor插件
+
 可以监控变化
 
 ## 前端获取服务端数据
@@ -32,9 +33,9 @@ router目录中的文件在app.js中引用
 开发时：前端访问的是8080端口，服务端是3000端口，产生了跨域，所以需要代理转发
 正式发布前后端应该部署到一起
 
-在config/index.js  下 `proxyTable`添加
+在config/index.js  下 `proxyTable` 添加
 
-```
+```JavaScript
     proxyTable: {
       '/goods': {
         target: 'http://localhost:3000'
