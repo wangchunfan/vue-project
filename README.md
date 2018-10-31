@@ -47,7 +47,28 @@ supervisor插件
     },
 ```
 
-## 商品数据列表分页和排序
+## 商品数据列表排序和分页
 
 - 首先实现服务端从数据库获取分页并排序后的数据
 - 然后前端从服务端获取数据，并实现页面的相应业务逻辑
+
+### 排序
+
+给页面的排序按钮绑定排序方法，修改排序参数
+
+### 分页
+
+使用`vue-infinite-scroll`插件
+安装：`npm install vue-infinite-scroll --save`
+参考使用手册
+
+```javascript
+    loadMore: function() {
+      //busy为true时禁用插件功能
+      this.busy = true;
+      setTimeout(() => {
+        this.page++;
+        this.getGoodsList(true);
+      }, 500);
+    },
+```
