@@ -22,10 +22,28 @@ router.get('/', function (req, res, next) {
   //获取前端参数
   let page = parseInt(req.param("page"))
   let pageSize = parseInt(req.param("pageSize"))
-  let skip = (page - 1) * pageSize  //跳过数量
   let sort = req.param("sort")
+  let priceLevel = req.param("priceLevel")
+  let skip = (page - 1) * pageSize  //跳过数量
+  let priceGt = '',priceLet = '';
+
   //条件查找
   let params = {}
+  if(priceLevel != 'all'){
+    switch(priceLevel){
+      case '0':priceGt = 0;priceLet=100;break;
+      case '1':priceGt = 100;priceLet = 500;break;
+      case '2':priceGt = 500;priceLet = 1000;break;
+      case '3':priceGt = 1000;priceLet = 5000;break;
+    }
+    params = {
+      salePrice:{
+        $gt:priceGt,
+        $lte:priceLet
+      }
+    }
+  }
+
   //分页
   let goodsModel = Goods.find(params).skip(skip).limit(pageSize);
   //排序

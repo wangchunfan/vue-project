@@ -24,7 +24,7 @@
             <dl class="filter-price">
               <!--特殊存在未绑定-->
               <dt>Price:</dt>
-              <dd><a href="javascript:void(0)" v-bind:class="{'cur':priceChecked=='all'}" @click="priceChecked='all'">All</a>
+              <dd><a href="javascript:void(0)"  v-bind:class="{'cur':priceChecked=='all'}" @click="setPriceFilter('all')">All</a>
               </dd>
               <!--v-for 绑定格式相同数据-->
               <dd v-for="(prices,index) in priceFilter" :key='"priceFilter"+index'>
@@ -37,12 +37,11 @@
           <!-- search result accessories list -->
           <div class="accessory-list-wrap">
             <div class="accessory-list col-4">
-             
-                              <ul>
+                            <ul>
                               <li v-for="(item,index) in goodsList" :key='"goodsList"+index'>
                                 <div class="pic">
                                   <!--图片需要动态绑定，不能直接写src=""，这样会因页面渲染太快而导致图片未加载-->
-                                  <a href="#"><img v-lazy="'/static/'+item.productImage" alt=""></a>
+                                 <a href="#"><img v-lazy=" 'static/' + item.productImage" :key='"img"+item.productImage' ></a>
                                 </div>
                                 <div class="main">
                                   <div class="name">{{item.productName}}</div>
@@ -55,9 +54,8 @@
                             </ul>
                 <!-- 滚动条 -->
                 <div class="load-more" v-infinite-scroll="loadMore" infinite-scroll-disabled="busy" infinite-scroll-distance="10">
-                  加载中。。。
+                    <img v-show="isLoading" src="static/loading-svg/loading-balls.svg"/>
                 </div>
-                             
             </div>
           </div>
         </div>
@@ -89,6 +87,10 @@ export default {
       priceFilter: [
         {
           startPrice: "0.00",
+          endPrice: "100.00"
+        },
+        {
+          startPrice: "100.00",
           endPrice: "500.00"
         },
         {
@@ -97,10 +99,6 @@ export default {
         },
         {
           startPrice: "1000.00",
-          endPrice: "2000.00"
-        },
-        {
-          startPrice: "2000.00",
           endPrice: "5000.00"
         }
       ],
@@ -115,7 +113,9 @@ export default {
       page: 1,
       pageSize: 8,
       //滚动条
-      busy: true
+      busy: true,
+      //正在加载
+      isLoading: false
     };
   },
   components: {
@@ -133,13 +133,16 @@ export default {
       var param = {
         page: this.page,
         pageSize: this.pageSize,
-        sort: this.sortFlag ? 1 : -1
+        sort: this.sortFlag ? 1 : -1,
+        priceLevel:this.priceChecked
       };
+      this.isLoading = true
       axios
         .get("/goods", {
           params: param
         })
         .then(res => {
+          this.isLoading = false
           //console.log(res);
           var data = res.data;
           if (addFlag) {
@@ -163,7 +166,6 @@ export default {
       this.page = 1;
       this.getGoodsList();
     },
-
     //响应式布局：点击显示价格
     showFilterPop() {
       this.filterBy = true;
@@ -173,6 +175,8 @@ export default {
     setPriceFilter(index) {
       this.priceChecked = index;
       this.closePop();
+      this.page = 1
+      this.getGoodsList()
     },
     //滚动条
     loadMore: function() {

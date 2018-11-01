@@ -58,9 +58,9 @@ supervisor插件
 
 ### 分页
 
-使用`vue-infinite-scroll`插件
-安装：`npm install vue-infinite-scroll --save`
-参考使用手册
+- 使用`vue-infinite-scroll`插件
+- 安装：`npm install vue-infinite-scroll --save`
+- 参考使用手册
 
 ```javascript
     loadMore: function() {
@@ -72,3 +72,28 @@ supervisor插件
       }, 500);
     },
 ```
+
+## 价格过滤功能
+
+为每个过滤按钮绑定方法，向服务端传入参数，使用MongoDB的比较运算符
+
+## loading插件
+
+加入loading图片；默认设置不显示；当获取数据时显示
+
+```html
+ <!-- 滚动条 -->
+ <div class="load-more" v-infinite-scroll="loadMore" infinite-scroll-disabled="busy" infinite-scroll-distance="10">
+    <img v-show="isLoading" src="static/loading-svg/loading-balls.svg"/>
+</div>
+```
+
+## 使用lazy图片只加载一次问题
+
+需要添加`key`属性
+
+```html
+<a href="#"><img v-lazy=" 'static/' + item.productImage" :key="item.productImage" ></a>
+```
+
+## 加入购物车
