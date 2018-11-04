@@ -97,3 +97,16 @@ supervisor插件
 ```
 
 ## 加入购物车
+
+给用户集合中添加 `orderList` `cartList` `addressList` 属性存放用户购物车信息
+
+注意，
+以下获取到的doc是商品对象，其无`productNum` 和 `checked` 属性；
+不能直接使用`doc.producNum = 1` 或者 `doc.checked = 1`
+否则不会将这两个属性和值添加的cartList中
+
+```javascript
+  doc._doc.productNum = 1
+  doc._doc.checked = 1
+  userDoc.cartList.push(doc);
+```
