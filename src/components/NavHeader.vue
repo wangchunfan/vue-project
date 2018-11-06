@@ -21,7 +21,7 @@
               <!--<a href="/" class="navbar-link">我的账户</a>-->
               <span class="navbar-link" v-text="nickName" v-if="nickName"></span>
               <a href="javascript:void(0)" class="navbar-link" @click="loginModelFlag=true" v-if="!nickName">Login</a>
-              <a href="javascript:void(0)" class="navbar-link" v-if="nickName">Logout</a>
+              <a href="javascript:void(0)" class="navbar-link" @click="logOut" v-if="nickName">Logout</a>
               <div class="navbar-cart-container">
                 <span class="navbar-cart-count"></span>
                 <a class="navbar-link navbar-cart-link" href="/#/cart">
@@ -57,7 +57,7 @@
                 </ul>
               </div>
               <div class="login-wrap">
-                <a href="javascript:;" class="btn-login" @click="login()">登  录</a>
+                <a href="javascript:;" class="btn-login" @click="login">登  录</a>
               </div>
             </div>
           </div>
@@ -101,6 +101,15 @@ export default {
             this.errorTip = true;
           }
         });
+    },
+    logOut: function() {
+      axios.post("/users/logout").then(res => {
+        let result = res.data;
+        if (result.status == "0") {
+          this.nickName = ''
+
+        }
+      });
     }
   }
 };
