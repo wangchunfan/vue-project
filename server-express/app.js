@@ -21,9 +21,34 @@ app.set('view engine', 'html')
 
 app.use(logger('dev'));
 app.use(express.json());
-app.use(express.urlencoded({extended: false}));
+app.use(express.urlencoded({
+  extended: false
+}));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+
+//登录拦截
+app.use(function (req, res, next) {
+  console.log('originalUrl:' + req.originalUrl)//  originalUrl:/goods?page=1&pageSize=8&sort=1&priceLevel=all
+  console.log('path:' + req.path) // path:/goods
+  if (req.cookies.userId) {
+    //如果已经登录，则直接运行
+    next()
+  } else {
+    //未登录白名单
+    if (req.originalUrl == '/users/login' ||
+      req.originalUrl == '/users/logout' ||
+      req.path == '/goods') {
+      next()
+    } else {
+      res.json({
+        status: '1001',
+        msg: '当前未登录',
+        result: ''
+      })
+    }
+  }
+})
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
