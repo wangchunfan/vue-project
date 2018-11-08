@@ -12,8 +12,8 @@
           <a href="javascript:void(0)" class="default cur">Default</a>
           <a @click="sortGoods" href="javascript:void(0)" class="price">
             Price
-            <svg class="icon icon-arrow-short">
-              <use xlink:href="#icon-arrow-short"></use>
+            <svg class="icon icon-arrow-short" v-bind:class="{'sort-up':!sortFlag}">
+              <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-arrow-short"></use>
             </svg>
           </a>
           <a href="javascript:void(0)" class="filterby stopPop" @click="showFilterPop">Filter by</a>
@@ -61,8 +61,34 @@
         </div>
       </div>
     </div>
-    <!--遮罩层-->
+    <!--价格选择遮罩层-->
     <div class="md-overlay" v-show="overLayFlag" @click="closePop"></div>
+    <!-- 未登录，禁止加入购物车提示 -->
+    <model v-bind:mdShow="mdShow" v-on:close="closeModel()">
+      <p slot="message">
+        请先登录，否则无法加入购物车！
+      </p>
+      <div slot="btnGroup">
+        <a class="btn btn--m" href="javascript:;" @click="mdShow=false">
+          关闭
+        </a>
+      </div>
+    </model>
+    <!-- 加入购物车成功提示 -->
+    <model v-bind:mdShow="mdShowCart" v-on:close="closeModel()">
+      <p slot="message">
+          <svg class="icon-status-ok">
+            <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-status-ok"></use>
+          </svg>
+          <span>加入购物车成功！</span>
+      </p>
+      <div slot="btnGroup">
+        <a class="btn btn--m" href="javascript:;" @click="mdShowCart=false">
+          继续购物
+        </a>
+        <router-link class="btn btn--m" href="javascript:;" to="/cart">进入购物车查看</router-link>
+      </div>
+    </model>
     <nav-footer></nav-footer>
   </div>
 </template>
@@ -71,12 +97,11 @@
 //引用css静态资源
 import "./../assets/css/base.css";
 import "./../assets/css/product.css";
-import "./../assets/css/login.css";
 import NavHeader from "@/components/NavHeader.vue";
 import NavFooter from "@/components/NavFooter.vue";
 import NavBread from "@/components/NavBread.vue";
+import Model from "@/components/Model";
 import axios from "axios";
-
 
 export default {
   data() {
@@ -115,13 +140,18 @@ export default {
       //滚动条
       busy: true,
       //正在加载
-      isLoading: false
+      isLoading: false,
+      //未登录，禁止加入购物车Model框
+      mdShow: false,
+      //加入购物车成功
+      mdShowCart:false
     };
   },
   components: {
     NavHeader,
     NavFooter,
-    NavBread
+    NavBread,
+    Model
   },
   mounted: function() {
     //获取商品数据
@@ -134,15 +164,15 @@ export default {
         page: this.page,
         pageSize: this.pageSize,
         sort: this.sortFlag ? 1 : -1,
-        priceLevel:this.priceChecked
+        priceLevel: this.priceChecked
       };
-      this.isLoading = true
+      this.isLoading = true;
       axios
         .get("/goods", {
           params: param
         })
         .then(res => {
-          this.isLoading = false
+          this.isLoading = false;
           //console.log(res);
           var data = res.data;
           if (addFlag) {
@@ -175,8 +205,8 @@ export default {
     setPriceFilter(index) {
       this.priceChecked = index;
       this.closePop();
-      this.page = 1
-      this.getGoodsList()
+      this.page = 1;
+      this.getGoodsList();
     },
     //滚动条
     loadMore: function() {
@@ -192,20 +222,46 @@ export default {
       this.overLayFlag = false;
     },
     //加入购物车
-    addCart(productId){
-      axios.post("/goods/addCart",{
-        productId:productId
-      }).then(res=>{
-        if(res.data.status == 0){
-          alert("加入成功")
-        }else{
-          alert('msg:'+ res.data.msg)
-        }
-      })
+    addCart(productId) {
+      axios
+        .post("/goods/addCart", {
+          productId: productId
+        })
+        .then(res => {
+          if (res.data.status == 0) {
+            this.mdShowCart = true
+          } else {
+            this.mdShow = true;
+          }
+        });
+    },
+    //关闭模态框
+    closeModel() {
+      this.mdShow = false;
+      this.mdShowCart = false;
     }
   }
 };
 </script>
 
 <style scoped>
+.load-more {
+  height: 100px;
+  line-height: 100px;
+  text-align: center;
+}
+
+.btn:hover {
+  background-color:rgb(218, 139, 139);
+  transition: all 0.3s ease-out;
+}
+
+.sort-up {
+  transform: rotate(180deg);
+  transition: all 0.3s ease-out;
+}
+
+.icon-arrow-short {
+  transition: all 0.3s ease-out;
+}
 </style>

@@ -85,7 +85,7 @@ router.get('/', function (req, res, next) {
 })
 //加入购物车
 router.post("/addCart", function (req, res, next) {
-  var userId = "100000077",
+  var userId = "1",
     productId = req.body.productId;
   var User = require('../models/user')
   //通过用户ID查询该用户信息
