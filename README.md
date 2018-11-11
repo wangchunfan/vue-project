@@ -1,66 +1,98 @@
-# 登录模块的实现
+# 购物车模块
 
-## 登录
+## 购物车列表功能
 
-- 引入登录框HTML和css内容
-- 后端根据用户名、密码进行查找
-- 前端实现校验
-
-## 登出
-
-- 后端清空cookie，返回空
-- 前端调用，还原data中的相应值
-
-## 登录拦截
-
-在未登录前禁止某些后端请求；
-在服务端app.js中添加
+- 实现后端接口
+- 新增vue页面`Cart.vue`,页面布局设置
+- 添加路由
 
 ```javascript
-//登录拦截
-app.use(function (req, res, next) {
-  console.log('originalUrl:' + req.originalUrl)//  originalUrl:/goods?page=1&pageSize=8&sort=1&priceLevel=all
-  console.log('path:' + req.path) // path:/goods
-  if (req.cookies.userId) {
-    //如果已经登录，则直接运行
-    next()
-  } else {
-    //未登录白名单
-    if (req.originalUrl == '/users/login' ||
-      req.originalUrl == '/users/logout' ||
-      req.path == '/goods') {
-      next()
-    } else {
-      res.json({
-        status: '1001',
-        msg: '当前未登录',
-        result: ''
-      })
+    {
+      path:'/cart',
+      name:'Goodslist',
+      component:Cart
     }
-  }
-})
 ```
 
-## 登录校验
+## 购物车商品删除
 
-每次刷新页面时通过后端检验cookies中是否有用户登录信息；返回与登录时相同的数据
-
-## 全局模态框组件
-
-子组件可以接受父组件传递的值，但是不能修改
-
-Model子组件
+mongoDb删除子集合中的数据
 
 ```javascript
-  methods:{
-      closeModel(){
-          this.$emit('close')
+  User.update({
+    userId: userId
+  }, {
+    $pull: {
+      'cartList': {
+        'productId': productId
       }
-  }
+    }
+  }, function (err, doc) {
+
+  })
 ```
 
-父组件
+## 购物车商品数量、选中状态修改
 
-```html
-   <model v-bind:mdShow="mdShow" v-on:close="closeModel()"></model>
+- 购物车中商品选中状态要存数据库
+- MongoDB修改子集合中数据
+
+```JavaScript
+User.update({
+    'userId': userId,
+    "cartList.productId": productId
+  }, {
+    'cartList.$.productNum': productNum,
+    'cartList.$.checked': checked
+  }, function (err, doc) {
+
+  })
+```
+
+## 购物车全选和商品总价实时计算
+
+- 全选为计算属性，根据列表的选择状态实时计算；如此不用存数据库
+
+```javascript
+  computed: {
+    //是否全选
+    checkAllFlag() {
+      return (
+        this.cartList.filter(item => item.checked == 1).length == this.cartList.length
+      );
+    },
+    //总价计算
+    totalPrice() {
+      return this.cartList.reduce(function(total, item) {
+        return total + (item.checked == 1 ? item.productNum * item.salePrice : 0)
+      },0);
+    }
+  },
+```
+
+## 金额格式化
+
+引用插件：[https://github.com/vuejs/vuex/edit/dev/examples/shopping-cart/currency.js](https://github.com/vuejs/vuex/edit/dev/examples/shopping-cart/currency.js)
+
+- 局部使用
+
+```JavaScript
+import {currency} from './../util/currency'
+  //过滤器,Vue的属性，和data，methods并列
+  filters:{
+     currency: currency
+  }
+//使用
+{{totalPrice|currency('$')}}
+```
+
+- 全局使用
+
+在`main.js`中引用
+
+```JavaScript
+import {currency} from './util/currency'
+Vue.filter('currency',currency)
+//使用
+{{totalPrice|currency('$')}}
 ```

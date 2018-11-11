@@ -17,7 +17,12 @@ module.exports = {
       '/goods/*': {
         target: 'http://localhost:3000'
       },
+      //二级路由匹配
       '/users/*': {
+        target: 'http://localhost:3000'
+      },
+      //三级路由匹配
+      '/users/**':{
         target: 'http://localhost:3000'
       }
     },
