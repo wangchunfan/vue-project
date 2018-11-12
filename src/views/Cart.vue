@@ -109,7 +109,7 @@
           <div class="cart-foot-inner">
             <div class="cart-foot-l">
               <div class="item-all-check">
-                <a href="javascript:;" @click="toggleCheckAll">
+                <a href="javascript:;" @click="toggleCheckAll()">
                   <span class="checkbox-btn item-check-btn" v-bind:class="{'check':checkAllFlag}">
                       <svg class="icon icon-ok"><use xlink:href="#icon-ok"/></svg>
                   </span>
@@ -122,7 +122,7 @@
                 Item total: <span class="total-price">{{totalPrice|currency('$')}}</span>
               </div>
               <div class="btn-wrap">
-                <a class="btn btn--red">Checkout</a>
+                <a class="btn btn--red" v-bind:class="{'btn--dis':checkedCount==0}" @click="checkOut()">Checkout</a>
               </div>
             </div>
           </div>
@@ -197,11 +197,13 @@ export default {
     this.init();
   },
   computed: {
+    //选中数量
+    checkedCount(){
+        return this.cartList.filter(item => item.checked == 1).length
+    },
     //是否全选
     checkAllFlag() {
-      return (
-        this.cartList.filter(item => item.checked == 1).length == this.cartList.length
-      );
+      return this.checkedCount == this.cartList.length
     },
     //总价计算
     totalPrice() {
@@ -275,6 +277,14 @@ export default {
             //console.log('成功')
           }
         });
+    },
+    //商品结算
+    checkOut(){
+        if(this.checkedCount>0){
+            this.$router.push({
+                path:'/address'
+            })
+        }
     }
   }
 };

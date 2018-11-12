@@ -12,8 +12,15 @@ var userSchema = new mongoose.Schema({
     "productImage": String,
     "checked": String,
     "productNum": String
-    }],
-  "addressList": Array
+  }],
+  "addressList": [{
+    "addressId": String,
+    "userName": String,
+    "streetName": String,
+    "postCode": Number,
+    "tel": Number,
+    "isDefault": Boolean
+  }]
 });
 
 //可以加第三个参数'users'表示和mongodb中哪个表关联；
