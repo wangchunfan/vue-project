@@ -181,14 +181,14 @@ router.post("/editCheckAll", function (req, res, next) {
         user.cartList.forEach(item => {
           item.checked = checkAllFlag
         })
-        user.save(function(err,doc){
-          if(err){
+        user.save(function (err, doc) {
+          if (err) {
             res.json({
               status: '1',
               msg: err.message,
               resutlt: ''
             })
-          }else{
+          } else {
             res.json({
               status: '0',
               msg: '',
@@ -197,9 +197,105 @@ router.post("/editCheckAll", function (req, res, next) {
           }
         })
       }
+    }
+  })
+})
 
+//查询用户地址列表接口
+router.get('/addressList', function (req, res, next) {
+  var userId = req.cookies.userId
+  User.findOne({
+    userId: userId
+  }, function (err, doc) {
+    if (err) {
+      res.json({
+        status: '1',
+        msg: err.message,
+        result: ''
+      })
+    } else {
+      res.json({
+        status: '0',
+        msg: '',
+        result: doc.addressList
+      })
+    }
+  })
+})
 
+//设置默认地址
+router.post('/setDefault', function (req, res, next) {
+  var userId = req.cookies.userId,
+    addressId = req.body.addressId
+  if (addressId) {
+    User.findOne({
+      userId: userId
+    }, function (err, doc) {
+      if (err) {
+        res.json({
+          status: '1',
+          msg: err.message,
+          result: ''
+        })
+      } else {
+        var addressList = doc.addressList
+        addressList.forEach((item) => {
+          if (item.addressId == addressId) {
+            item.isDefault = true
+          } else {
+            item.isDefault = false
+          }
+        })
+      }
+      doc.save(function (err1, doc1) {
+        if (err) {
+          res.json({
+            status: '1',
+            msg: err.message,
+            result: ''
+          })
+        } else {
+          res.json({
+            status: '0',
+            msg: '',
+            result: addressList
+          })
+        }
+      })
+    })
+  } else {
+    res.json({
+      status: '1003',
+      msg: 'addresdId is not fined',
+      result: ''
+    })
+  }
+})
 
+//删除地址
+router.post("/addressDel",function(req,res,next){
+  var userId = req.cookies.userId,addressId=req.body.addressId
+  User.update({
+    userId: userId
+  }, {
+    $pull: {
+      'addressList': {
+        'addressId': addressId
+      }
+    }
+  }, function (err, doc) {
+    if (err) {
+      res.json({
+        status: '1',
+        msg: err.message,
+        resutlt: ''
+      })
+    } else {
+      res.json({
+        status: '0',
+        msg: '删除成功',
+        result: 'suc'
+      })
     }
   })
 })
