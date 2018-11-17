@@ -1,9 +1,12 @@
 <template>
 <div>
-<nav-header></nav-header>
-<div class="checkout-page">
-  <svg style="position: absolute; width: 0; height: 0; overflow: hidden;" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <defs>
+    <nav-header></nav-header>
+    <nav-bread>
+        <span>Address</span>
+    </nav-bread>
+    <div class="checkout-page">
+        <svg style="position: absolute; width: 0; height: 0; overflow: hidden;" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+      <defs>
       <symbol id="icon-add" viewBox="0 0 31 32">
         <title>add</title>
         <path class="path1" d="M30.745 15.152h-14.382v-14.596c0-0.308-0.243-0.557-0.543-0.557s-0.543 0.249-0.543 0.557v14.596h-14.665c-0.3 0-0.543 0.249-0.543 0.557s0.243 0.557 0.543 0.557h14.665v15.177c0 0.307 0.243 0.557 0.543 0.557s0.543-0.249 0.543-0.557v-15.177h14.382c0.3 0 0.543-0.249 0.543-0.557s-0.243-0.557-0.543-0.557z"></path>
@@ -33,104 +36,104 @@
         <path class="path2" d="M16 22.080c-1.059 0-1.92 0.861-1.92 1.92s0.861 1.92 1.92 1.92c1.059 0 1.92-0.861 1.92-1.92s-0.861-1.92-1.92-1.92z"></path>
         <path class="path3" d="M12.16 12.48c0.706 0 1.28-0.574 1.28-1.28 0-1.412 1.148-2.56 2.56-2.56s2.56 1.148 2.56 2.56c0 1.412-1.148 2.56-2.56 2.56-0.706 0-1.28 0.574-1.28 1.28v3.84c0 0.706 0.574 1.28 1.28 1.28s1.28-0.574 1.28-1.28v-2.723c2.224-0.575 3.84-2.616 3.84-4.957 0-2.823-2.297-5.12-5.12-5.12s-5.12 2.297-5.12 5.12c0 0.706 0.574 1.28 1.28 1.28z"></path>
       </symbol>
-    </defs>
-  </svg>
-  <div class="container">
-    <div class="checkout-addr">
-      <div class="page-title-normal">
-        <h2 class="page-title-h2"><span>check out</span></h2>
-      </div>
-      <!-- process step -->
-      <div class="check-step">
-        <ul>
-          <li class="cur"><span>Confirm</span> address</li>
-          <li><span>View your</span> order</li>
-          <li><span>Make</span> payment</li>
-          <li><span>Order</span> confirmation</li>
-        </ul>
-      </div>
+     </defs>
+     </svg>
+        <div class="container">
+            <div class="checkout-addr">
+                <div class="page-title-normal">
+                    <h2 class="page-title-h2"><span>check out</span></h2>
+                </div>
+                <!-- process step -->
+                <div class="check-step">
+                    <ul>
+                        <li class="cur"><span>Confirm</span> address</li>
+                        <li><span>Order</span> confirmation</li>
+                        <li><span>Make</span> payment</li>
+                        <li><span>View your</span> order</li>
+                    </ul>
+                </div>
 
-      <!-- address list -->
-      <div class="page-title-normal checkout-title">
-        <h2><span>Shipping address</span></h2>
-      </div>
-      <div class="addr-list-wrap">
-        <div class="addr-list">
-          <ul>
-            <li v-for="(item,index) in addressListFilter" :key="'addressList'+index" v-bind:class="{'check':checkedIndex==index}" @click="checkedIndex=index">
-              <dl>
-                <dt>{{item.userName}}</dt>
-                <dd class="address">{{item.streetName}}</dd>
-                <dd class="tel">{{item.tel}}</dd>
-              </dl>
-              <div class="addr-opration addr-del">
-                <a href="javascript:;" class="addr-del-btn" @click="addressDelConfirm(item.addressId)">
-                  <svg class="icon icon-del"><use xlink:href="#icon-del"></use></svg>
-                </a>
-              </div>
-              <div class="addr-opration addr-set-default" v-if="!item.isDefault">
-                <a @click="setDefault(item.addressId)" href="javascript:;" class="addr-set-default-btn"><i>Set default</i></a>
-              </div>
-              <div class="addr-opration addr-default" v-if="item.isDefault">Default address</div>
-            </li>
-            <li class="addr-new">
-              <div class="add-new-inner">
-                <i class="icon-add">
-                  <svg class="icon icon-add"><use xlink:href="#icon-add"></use></svg>
-                </i>
-                <p>Add new address</p>
-              </div>
-            </li>
-          </ul>
-        </div>
+                <!-- address list -->
+                <div class="page-title-normal checkout-title">
+                    <h2><span>Shipping address</span></h2>
+                </div>
+                <div class="addr-list-wrap">
+                    <div class="addr-list">
+                        <ul>
+                            <li v-for="(item,index) in addressListFilter" :key="'addressList'+index" v-bind:class="{'check':checkedIndex==index}" @click="checkedIndex=index;selectedAddressId=item.addressId">
+                                <dl>
+                                    <dt>{{item.userName}}</dt>
+                                    <dd class="address">{{item.streetName}}</dd>
+                                    <dd class="tel">{{item.tel}}</dd>
+                                </dl>
+                                <div class="addr-opration addr-del">
+                                    <a href="javascript:;" class="addr-del-btn" @click="addressDelConfirm(item.addressId)">
+                                      <svg class="icon icon-del"><use xlink:href="#icon-del"></use></svg>
+                                    </a>
+                                </div>
+                                <div class="addr-opration addr-set-default" v-if="!item.isDefault">
+                                    <a @click="setDefault(item.addressId)" href="javascript:;" class="addr-set-default-btn"><i>Set default</i></a>
+                                </div>
+                                <div class="addr-opration addr-default" v-if="item.isDefault">Default address</div>
+                            </li>
+                            <li class="addr-new">
+                                <div class="add-new-inner">
+                                    <i class="icon-add">
+                                      <svg class="icon icon-add"><use xlink:href="#icon-add"></use></svg>
+                                    </i>
+                                    <p>Add new address</p>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
 
-        <div class="shipping-addr-more">
-          <a class="addr-more-btn up-down-btn" href="javascript:;" @click="expand" v-bind:class="{'open':limit>3}">
-            more
-            <i class="i-up-down">
-              <i class="i-up-down-l"></i>
-              <i class="i-up-down-r"></i>
-            </i>
-          </a>
-        </div>
-      </div>
+                    <div class="shipping-addr-more">
+                        <a class="addr-more-btn up-down-btn" href="javascript:;" @click="expand" v-bind:class="{'open':limit>3}">
+                                    more
+                          <i class="i-up-down">
+                            <i class="i-up-down-l"></i>
+                            <i class="i-up-down-r"></i>
+                          </i>
+                        </a>
+                    </div>
+                </div>
 
-      <!-- shipping method-->
-      <div class="page-title-normal checkout-title">
-        <h2><span>Shipping method</span></h2>
-      </div>
-      <div class="lemall-msg-info hidden">
-        <span>The region you selected is not within our delivery area. Please select another shipping address within our delivery areas.</span>
-      </div>
-      <div class="shipping-method-wrap">
-        <div class="shipping-method">
-          <ul>
-            <li class="check">
-              <div class="name">Standard shipping</div>
-              <div class="price">Free</div>
-              <div class="shipping-tips">
-                <p>Once shipped，Order should arrive in the destination in 1-7 business days</p>
-              </div>
-            </li>
-          </ul>
+                <!-- shipping method-->
+                <div class="page-title-normal checkout-title">
+                    <h2><span>Shipping method</span></h2>
+                </div>
+                <div class="lemall-msg-info hidden">
+                    <span>The region you selected is not within our delivery area. Please select another shipping address within our delivery areas.</span>
+                </div>
+                <div class="shipping-method-wrap">
+                    <div class="shipping-method">
+                        <ul>
+                            <li class="check">
+                                <div class="name">Standard shipping</div>
+                                <div class="price">Free</div>
+                                <div class="shipping-tips">
+                                    <p>Once shipped，Order should arrive in the destination in 1-7 business days</p>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="next-btn-wrap">
+                    <router-link class="btn btn--m btn--red" v-bind:to="{path:'orderConfirm',query:{'addressId':selectedAddressId}}">Next</router-link>
+                </div>
+            </div>
         </div>
-      </div>
-      <div class="next-btn-wrap">
-        <a  class="btn btn--m btn--red" to="/orderConfim">Next</a>
-      </div>
     </div>
-  </div>
-</div>
-<nav-footer></nav-footer>
-<model :mdShow="isMdShow" v-on:close="isMdShow=false">
-  <p slot="message">
-    确认删除吗？
-  </p>
-  <div slot="btnGroup">
-    <a class="btn btn--m" href="javascript:;" @click="delAddress">确认</a>
-    <a class="btn btn--m" href="javascript:;" @click="isMdShow=false">取消</a>
-  </div>
-</model>
+    <nav-footer></nav-footer>
+    <model :mdShow="isMdShow" v-on:close="isMdShow=false">
+        <p slot="message">
+            确认删除吗？
+        </p>
+        <div slot="btnGroup">
+            <a class="btn btn--m" href="javascript:;" @click="delAddress">确认</a>
+            <a class="btn btn--m" href="javascript:;" @click="isMdShow=false">取消</a>
+        </div>
+    </model>
 </div>
 </template>
 
@@ -141,82 +144,89 @@ import NavFooter from "@/components/NavFooter.vue";
 import NavBread from "@/components/NavBread.vue";
 import Model from "@/components/Model";
 import axios from "axios";
-import { currency } from "./../util/currency";
 
 export default {
-  data() {
-    return {
-      selectedAddressId:'',
-      limit: 3,
-      checkedIndex: 0,
-      addressList: [],
-      isMdShow:false,
-      addressId:''
-    };
-  },
-  components: {
-    NavHeader,
-    NavFooter,
-    NavBread,
-    Model
-  },
-  mounted() {
-    this.init();
-  },
-  computed: {
-    addressListFilter() {
-      return this.addressList.slice(0, this.limit);
-    }
-  },
-  methods: {
-    init() {
-      axios.get("/users/addressList").then(res => {
-        let result = res.data;
-        if (result.status == "0") {
-          this.addressList = result.result;
+    data() {
+        return {
+            selectedAddressId: "",
+            limit: 3,
+            checkedIndex: 0,
+            addressList: [],
+            isMdShow: false,
+            addressId: ""
+        };
+    },
+    components: {
+        NavHeader,
+        NavFooter,
+        NavBread,
+        Model
+    },
+    mounted() {
+        this.init();
+    },
+    computed: {
+        addressListFilter() {
+            return this.addressList.slice(0, this.limit);
         }
-      });
     },
-    //展开更多
-    expand() {
-      if (this.limit == 3) {
-        this.limit = this.addressList.length;
-      } else {
-        this.limit = 3;
-      }
-    },
-    //设置默认地址
-    setDefault(addressId) {
-      axios
-        .post("/users/setDefault", {
-          addressId: addressId
-        })
-        .then(res => {
-          let result = res.data;
-          if (result.status == 0) {
-            this.addressList = result.result;
-          }
-        });
-    },
-    //删除地址确认框
-    addressDelConfirm(addressId){
-      this.isMdShow = true
-      this.addressId = addressId
-    },
-    //删除地址
-    delAddress(){
-      this.isMdShow = false
-      axios.post("/users/addressDel",{
-        addressId:this.addressId
-      }).then(res=>{
-        let result = res.data
-        if(result.status == '0'){
-          this.isMdShow = false
-          this.init()
+    methods: {
+        init() {
+            axios.get("/users/addressList").then(res => {
+                let result = res.data;
+                if (result.status == "0") {
+                    this.addressList = result.result;
+                    this.addressList.forEach(function (item) {
+                        if (item.isDefault) {
+                            this.selectedAddressId = item.addressId
+                        }
+                    },this)
+
+                }
+            });
+        },
+        //展开更多
+        expand() {
+            if (this.limit == 3) {
+                this.limit = this.addressList.length;
+            } else {
+                this.limit = 3;
+            }
+        },
+        //设置默认地址
+        setDefault(addressId) {
+            axios
+                .post("/users/setDefault", {
+                    addressId: addressId
+                })
+                .then(res => {
+                    let result = res.data;
+                    if (result.status == 0) {
+                        this.addressList = result.result;
+                    }
+                });
+        },
+        //删除地址确认框
+        addressDelConfirm(addressId) {
+            this.isMdShow = true;
+            this.addressId = addressId;
+        },
+        //删除地址
+        delAddress() {
+            this.isMdShow = false;
+            axios
+                .post("/users/addressDel", {
+                    addressId: this.addressId
+                })
+                .then(res => {
+                    let result = res.data;
+                    if (result.status == "0") {
+                        this.isMdShow = false;
+                        this.init();
+                    }
+                });
         }
-      })
     }
-  }
 };
 </script>
 
