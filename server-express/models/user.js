@@ -3,8 +3,14 @@ var userSchema = new mongoose.Schema({
   "userId": String,
   "userName": String,
   "userPwd": String,
-  "userList": Array,
-  "orderTotal": String,
+  "userList": [{
+    "orderId": String,
+    "orderTotal": Number,
+    "addressInfo": Object,
+    "goodsList": Array,
+    "orderStatus": Number,
+    "createDate": Date
+  }],
   "cartList": [{
     "productId": String,
     "productName": String,

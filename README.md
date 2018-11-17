@@ -1,29 +1,45 @@
-# 地址模块
+# 订单功能模块
 
-## 地址列表功能实现
+1. 订单确认列表：订单列表数据和购物车列表数据使用同一个接口；订单列表中只显示已选择的商品；
+2. 生成订单：将订单列表中的商品信息和地址信息保存到User对象的orderList属性中
+3. 订单成功页面
 
-- 在view目录中,新建address.vue页面
-- 添加路由
-- 在购物车中设置页面跳转
+注意：
+post传参和get传参不同
 
-## 地址展开和切换选择
-
-地址展开
-
-- 设置limit，默认显示条数
-- 计算`addressListFilter(){return this.addressList.slice(0,limit)}`
-- 展开时`this.limit == this.addressList.length`
-- 关闭时`this.limit = 3`
-
-通过索引index实现地址选中切换
-
-```html
-<li v-for="(item,index) in addressListFilter"
-    :key="'addressList'+index"
-    v-bind:class="{'check':checkedIndex==index}"
-    @click="checkIndex=index">
-    ...
-</li>
+```JavaScript
+//前端，直接传值
+            axios.post("/users/payMent", {
+                addressId: addressId,
+                orderTotal: this.orderTotal
+            }).then(res => {
+                let result = res.data
+                if (result.status == '0') {
+                    this.$router.push({
+                        path: '/orderSuccess?orderId=' + result.result.orderId
+                    })
+                }
+            })
+//服务端，使用req.body
+router.post('/payMent', function (req, res, next) {
+  var userId = req.cookies.userId,
+    orderTotal = req.body.orderTotal,
+    addressId = req.body.addressId
+)
 ```
 
-## 设置默认地址
+```JavaScript
+//前端传参使用 params
+        axios.get("/users/orderDetail", {
+            params: {
+                orderId: orderId
+            }
+        }).then(res => {
+
+        })
+//服务端，使用req.param()方法
+router.get('/orderDetail', function (req, res, next) {
+  var userId = req.cookies.userId,
+    orderId = req.param('orderId')
+)
+```
