@@ -20,3 +20,24 @@
 - `dev`：开发分支
 - `master`：主分支，包含所有功能
 
+## 启动项目
+
+导入 MongoDB 数据，参考 mongodb 分支
+
+修改 `config/index.js` 下的访问地址和端口，还要代理 target，启动前端
+
+```
+npm install
+npm run dev
+```
+
+修改 `server-express/routes/goods.js` 的 MongoDB 连接串，启动后端
+
+```
+cd server-express
+npm install
+node bin/www
+```
+
+## 在线访问地址
+
