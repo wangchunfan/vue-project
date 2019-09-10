@@ -1,45 +1,22 @@
-# 订单功能模块
+# 商城小项目
 
-1. 订单确认列表：订单列表数据和购物车列表数据使用同一个接口；订单列表中只显示已选择的商品；
-2. 生成订单：将订单列表中的商品信息和地址信息保存到User对象的orderList属性中
-3. 订单成功页面
+该项目使用
 
-注意：
-post传参和get传参不同
+- vue
+- node
+- mongodb
 
-```JavaScript
-//前端，直接传值
-            axios.post("/users/payMent", {
-                addressId: addressId,
-                orderTotal: this.orderTotal
-            }).then(res => {
-                let result = res.data
-                if (result.status == '0') {
-                    this.$router.push({
-                        path: '/orderSuccess?orderId=' + result.result.orderId
-                    })
-                }
-            })
-//服务端，使用req.body
-router.post('/payMent', function (req, res, next) {
-  var userId = req.cookies.userId,
-    orderTotal = req.body.orderTotal,
-    addressId = req.body.addressId
-)
-```
+创建若干分支，每个分支实现了一个功能模块或者是讲诉一个知识点
 
-```JavaScript
-//前端传参使用 params
-        axios.get("/users/orderDetail", {
-            params: {
-                orderId: orderId
-            }
-        }).then(res => {
+- [basic-vue](/tree/basic-vue)：vue基础
+- [module-goodsList](/tree/module-goodsList)：商品列表模块的前端实现
+- [node](/tree/node)：后端 Node 服务搭建
+- [mongodb](/tree/mongodb)：mongodb 的使用
+- [module-goods-and-mongodb](/tree/module-goods-and-mongodb)：基于 node 和 MongoDB 开发商品列表后端接口
+- [module-login](/tree/module-login)：登录模块的实现
+- [module-goodsCart](/tree/module-goodsCart)：购物车模块
+- [module-address](/tree/module-address)：地址模块
+- [module-order](/tree/module-order)：订单模块
+- `dev`：开发分支
+- `master`：主分支，包含所有功能
 
-        })
-//服务端，使用req.param()方法
-router.get('/orderDetail', function (req, res, next) {
-  var userId = req.cookies.userId,
-    orderId = req.param('orderId')
-)
-```
