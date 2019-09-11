@@ -146,9 +146,9 @@ export default {
         return {
             cartList: [],
             subtotal: 0,
-            shipping: 200,
-            discount: 240,
-            tax: 45,
+            shipping: 2,
+            discount: 4,
+            tax: 5,
             orderTotal: 0
         };
     },
