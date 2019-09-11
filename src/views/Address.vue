@@ -176,9 +176,10 @@ export default {
                 let result = res.data;
                 if (result.status == "0") {
                     this.addressList = result.result;
-                    this.addressList.forEach(function (item) {
+                    this.addressList.forEach(function (item, index) {
                         if (item.isDefault) {
-                            this.selectedAddressId = item.addressId
+                            this.selectedAddressId = item.addressId,
+                            this.checkedIndex = index
                         }
                     },this)
 
@@ -214,6 +215,7 @@ export default {
         //删除地址
         delAddress() {
             this.isMdShow = false;
+            return;
             axios
                 .post("/users/addressDel", {
                     addressId: this.addressId

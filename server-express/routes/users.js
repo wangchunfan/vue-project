@@ -347,7 +347,7 @@ router.post('/payMent', function (req, res, next) {
         createDate: new Date()
       }
       //
-      doc._doc.orderList.push(order)
+      doc.orderList.push(order)
       doc.save(function (err1, doc1) {
         if (err1) {
           req.json({
@@ -383,7 +383,7 @@ router.get('/orderDetail', function (req, res, next) {
         result: ''
       })
     } else {
-      var orderList = userInfo._doc.orderList
+      var orderList = userInfo.orderList
       if (orderList && orderList.length > 0) {
         var orderTotal = 0
         orderList.forEach(item => {

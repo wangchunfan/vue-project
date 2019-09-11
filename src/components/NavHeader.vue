@@ -81,8 +81,8 @@ import axios from "axios";
 export default {
   data() {
     return {
-      userName: "",
-      userPwd: "",
+      userName: "admin",
+      userPwd: "123456",
       errorTip: false,
       loginModelFlag: false,
       nickName: ""
