@@ -8,23 +8,23 @@
 
 - 商品列表
 
-![商品列表](static/goodsList.png)
+![商品列表](/static/goodsList.png)
 
 - 购物车
 
-![购物车](static/car.png)
+![购物车](/static/car.png)
 
 - 选择地址
 
-![地址选择](static/address.png)
+![地址选择](/static/address.png)
 
 - 确认订单
 
-![确认订单](static/orderConfirmation.png)
+![确认订单](/static/orderConfirmation.png)
 
 - 订单列表
 
-![订单列表](static/viewOrder.png)
+![订单列表](/static/viewOrder.png)
 
 ## 技术栈
 
