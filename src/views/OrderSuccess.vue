@@ -12,9 +12,9 @@
         <div class="check-step">
             <ul>
                 <li class="cur"><span>Confirm</span> address</li>
-                <li class="cur"><span>View your</span> order</li>
-                <li class="cur"><span>Make</span> payment</li>
                 <li class="cur"><span>Order</span> confirmation</li>
+                <li class="cur"><span>Make</span> payment</li>
+                <li class="cur"><span>View your</span> order</li>
             </ul>
         </div>
 
