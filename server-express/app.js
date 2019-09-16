@@ -25,7 +25,8 @@ app.use(express.urlencoded({
   extended: false
 }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
+//设置静态文件路径
+app.use(express.static(path.join(__dirname, 'views')));
 
 //登录拦截
 app.use(function (req, res, next) {
