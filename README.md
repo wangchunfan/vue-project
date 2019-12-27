@@ -2,7 +2,7 @@
 
 ## 在线访问地址
 
-[http://mall.xuanshangling.club/](http://mall.xuanshangling.club/)
+[http://mall.chunfan.wang//](http://mall.chunfan.wang/)
 
 ## 主要页面
 
