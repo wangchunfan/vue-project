@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var mongoose = require('mongoose');
-var mongodbAddress = 'mongodb://192.144.199.235:27017/db_demo'
+var mongodbAddress = 'mongodb://127.0.0.1:27017/db_demo'
 //此处要加s可以和Good关联
 var Goods = require('../models/goods');
 //链接数据库
