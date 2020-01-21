@@ -129,4 +129,4 @@ db.goods.insert({'producetId:'100001',productName:'aaa',salePrice:234,productIma
 在 MongoDb文件夹中提供 `dumall-goods` 和`dumall-users`
 使用客户端导入前先创建 goods 和 users 两个集合
 
-通过命令导入：`mongoimport -d db_demo -c users --file /文件路径`
+在 bin 目录下，通过命令导入：`./mongoimport -d db_demo -c users --file /文件路径`
